@@ -7,7 +7,6 @@ import org.bukkit.command.CommandSender;
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Objects;
 
 class CommandCaller implements CommandExecutor {
      private final SubCommand subCommand;
@@ -22,7 +21,7 @@ class CommandCaller implements CommandExecutor {
          }
          SubCommand applicableCommand = getSubCommand(subCommand,args);
          if(applicableCommand == null){
-           sender.sendMessage( getSubCommand(subCommand,removeFirstItem(args)) == null ? getSubCommand(subCommand,removeFirstItem(args)) == null ? "/command" : Objects.requireNonNull(getSubCommand(subCommand, removeFirstItem(args))).getUsageMessage(): subCommand.getUsageMessage());
+           sender.sendMessage( getSubCommand(subCommand,removeFirstItem(args)) == null  ? getLastCommand(subCommand,args).getUsageMessage(): subCommand.getUsageMessage());
              return true;
          }
          if(applicableCommand.getPermission() != null && !sender.hasPermission(applicableCommand.getPermission())){
@@ -53,5 +52,16 @@ class CommandCaller implements CommandExecutor {
         ArrayList<String > out = new ArrayList<>(Arrays.asList(args));
         out.remove(0);
         return out.toArray(new String[0]);
+    }
+    private SubCommand getLastCommand(SubCommand command, String[] args){
+        if(command.getSubCommands().size() == 0 || args.length == 0) return command;
+        for (SubCommand commandSubCommand : command.getSubCommands()) {
+            for (String commandName : commandSubCommand.getAliases().keySet()) {
+                if (commandName.equalsIgnoreCase(args[0])) {
+                    return getLastCommand(commandSubCommand, removeFirstItem(args));
+                }
+            }
+        }
+        return command;
     }
 }

@@ -18,17 +18,22 @@ class TabCompleter implements org.bukkit.command.TabCompleter {
     @Override
     public List<String> onTabComplete(@Nonnull CommandSender sender, @Nonnull Command command, @Nonnull String label, @Nonnull String[] args) {
         ArrayList<String> out = new ArrayList<>();
+        ArrayList<String> possible = new ArrayList<>();
         SubCommand writtenCommand = getSubCommand(subCommand,args);
-        if(writtenCommand == null) return null;
+        if(writtenCommand == null) return out;
         if(writtenCommand.getSubCommands().size() == 0 && writtenCommand.getTabHandler() != null){
-            out.addAll(writtenCommand.getTabHandler().onTab(sender,command,label,args));
+            possible.addAll(writtenCommand.getTabHandler().onTab(sender,command,label,args));
         }
             writtenCommand.getSubCommands().forEach(sub -> {
                 if(sub.getPermission() != null && !sender.hasPermission(sub.getPermission())) return;
                 sub.getAliases().forEach((alias, tab) -> {
-                    if (tab && alias.toUpperCase().startsWith(args[args.length - 1].toUpperCase())) out.add(alias);
+                    if(tab) possible.add(alias);
                 });
             });
+        possible.forEach(possibleTab -> {
+            if (possibleTab.toUpperCase().startsWith(args[args.length - 1].toUpperCase())) out.add(possibleTab);
+
+        });
         return out;
     }
     private SubCommand getSubCommand(SubCommand command, String[] args){
@@ -37,10 +42,10 @@ class TabCompleter implements org.bukkit.command.TabCompleter {
             for (String commandName : commandSubCommand.getAliases().keySet()) {
                 if (commandName.equalsIgnoreCase(args[0]))
                     return getSubCommand(commandSubCommand, removeFirstItem(args));
-                if (commandName.toUpperCase().startsWith(args[0].toUpperCase())) return command;
+                if (commandName.toUpperCase().startsWith(args[0].toUpperCase()) && args.length == 1) return command;
             }
         }
-        return command;
+        return null;
     }
     private String[] removeFirstItem(String[] args){
         ArrayList<String > out = new ArrayList<>(Arrays.asList(args));
