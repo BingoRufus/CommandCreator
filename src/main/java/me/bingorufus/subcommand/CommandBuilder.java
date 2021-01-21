@@ -1,6 +1,5 @@
 package me.bingorufus.subcommand;
 
-import org.bukkit.command.Command;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 

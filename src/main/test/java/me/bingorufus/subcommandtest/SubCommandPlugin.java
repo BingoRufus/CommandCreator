@@ -6,6 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ public class SubCommandPlugin extends JavaPlugin {
         builder.addSubCommand(new SubCommandBuilder("tick").setCommandHandler((sender, command, label, args) -> {
             sender.sendMessage("§ctock");
             return false;
-        }).setUsage("/subcommand tick").addSubCommand(new SubCommandBuilder("tock").setCommandHandler(((sender, command, label, args) -> {
+        }).setUsage("/subcommand tick").addSubCommand(new SubCommandBuilder("tock").setPermission("subcommand.tock", PermissionDefault.OP).setCommandHandler(((sender, command, label, args) -> {
             if(args.length != 3){
                 return false;
             }

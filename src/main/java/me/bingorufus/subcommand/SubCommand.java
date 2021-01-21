@@ -1,5 +1,7 @@
 package me.bingorufus.subcommand;
 
+import me.bingorufus.subcommand.handlers.CommandHandler;
+import me.bingorufus.subcommand.handlers.TabHandler;
 import org.bukkit.permissions.Permission;
 
 import java.util.HashMap;
@@ -16,7 +18,7 @@ public class SubCommand {
     private final Set<SubCommand> subCommands;
     private final HashMap<String,Boolean> aliases;
 
-    public SubCommand(String commandName, Permission permission, CommandHandler handler, TabHandler tabHandler, String usageMessage, String permissionMessage, Set<SubCommand> subCommands, HashMap<String, Boolean> aliases) {
+     SubCommand(String commandName, Permission permission, CommandHandler handler, TabHandler tabHandler, String usageMessage, String permissionMessage, Set<SubCommand> subCommands, HashMap<String, Boolean> aliases) {
         this.commandName = commandName;
         this.permission = permission;
         this.commandHandler = handler;

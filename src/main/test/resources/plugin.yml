@@ -5,3 +5,4 @@ main: me.bingorufus.subcommandtest.SubCommandPlugin
 commands:
   subcommand:
     description: Base command
+api-version: 1.13

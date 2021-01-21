@@ -1,6 +1,8 @@
 package me.bingorufus.subcommand;
 
 import javafx.util.Builder;
+import me.bingorufus.subcommand.handlers.CommandHandler;
+import me.bingorufus.subcommand.handlers.TabHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
@@ -16,7 +18,7 @@ public class SubCommandBuilder implements Builder<SubCommand> {
     private boolean createPermission = true;
     private Permission permission;
     private String usage;
-    private String permissionMessage;
+    private String permissionMessage = "§cYou do not permission to do that!";
     private final HashMap<String,Boolean> aliases = new HashMap<>();
     protected final Set<SubCommand> subcommands = new HashSet<>();
     private CommandHandler handler;
@@ -67,8 +69,8 @@ public class SubCommandBuilder implements Builder<SubCommand> {
     }
     @Override
     public SubCommand build() {
-        if (permissionMessage != null || permission != null) {
-            if (createPermission) {
+
+            if (createPermission && permissionName != null) {
                 if(Bukkit.getPluginManager().getPermission(permissionName) != null){
                     permission =  Bukkit.getPluginManager().getPermission(permissionName);
                     assert permission != null;
@@ -79,10 +81,11 @@ public class SubCommandBuilder implements Builder<SubCommand> {
                     Bukkit.getServer().getPluginManager().addPermission(permission);
                 }
 
-            } else if (!Bukkit.getServer().getPluginManager().getPermissions().contains(permission)) {
+            } else if (permission != null && !Bukkit.getServer().getPluginManager().getPermissions().contains(permission)) {
                     Bukkit.getServer().getPluginManager().addPermission(permission);
             }
-        }
+
+
         return new SubCommand(commandName, permission, handler, tabHandler, usage == null ? generateUsageMessage() : usage, permissionMessage, subcommands, aliases);
 
     }
