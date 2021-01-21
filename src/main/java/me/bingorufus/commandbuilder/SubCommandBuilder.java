@@ -1,8 +1,8 @@
-package me.bingorufus.subcommand;
+package me.bingorufus.commandbuilder;
 
 import javafx.util.Builder;
-import me.bingorufus.subcommand.handlers.CommandHandler;
-import me.bingorufus.subcommand.handlers.TabHandler;
+import me.bingorufus.commandbuilder.handlers.CommandHandler;
+import me.bingorufus.commandbuilder.handlers.TabHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;

@@ -1,4 +1,4 @@
-package me.bingorufus.subcommand;
+package me.bingorufus.commandbuilder;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;

@@ -1,4 +1,4 @@
-package me.bingorufus.subcommand;
+package me.bingorufus.commandbuilder;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -31,6 +31,11 @@ class CommandCaller implements CommandExecutor {
 
          if(applicableCommand.getCommandHandler() != null) {
              if(!applicableCommand.getCommandHandler().execute(sender,command,label,args)) {
+                 SubCommand helpCommand = subCommand.getSubCommands().stream().filter(subCommand1 -> subCommand1.getCommandName().equalsIgnoreCase("help")).findFirst().orElse(applicableCommand);
+                 if(helpCommand != applicableCommand && helpCommand.getCommandName().equalsIgnoreCase("help")){
+                     helpCommand.getCommandHandler().execute(sender,command,label,args);
+                 return true;
+                 }
                  sender.sendMessage(applicableCommand.getUsageMessage());
              }
          }

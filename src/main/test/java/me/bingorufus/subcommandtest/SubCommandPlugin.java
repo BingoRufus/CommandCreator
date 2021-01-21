@@ -1,7 +1,7 @@
 package me.bingorufus.subcommandtest;
 
-import me.bingorufus.subcommand.CommandBuilder;
-import me.bingorufus.subcommand.SubCommandBuilder;
+import me.bingorufus.commandbuilder.CommandBuilder;
+import me.bingorufus.commandbuilder.SubCommandBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -15,14 +15,14 @@ import java.util.List;
 public class SubCommandPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
-        CommandBuilder builder = (CommandBuilder) new CommandBuilder(this,"subcommand").addSubCommand(new SubCommandBuilder("test").setCommandHandler((sender, command, label, args) -> {
+        CommandBuilder builder = (CommandBuilder) new CommandBuilder(this,"commandbuilder").addSubCommand(new SubCommandBuilder("test").setCommandHandler((sender, command, label, args) -> {
             sender.sendMessage("oof");
             return true;
-        }).setUsage("/subcommand test").build());
+        }).setUsage("/commandbuilder test").build());
         builder.addSubCommand(new SubCommandBuilder("tick").setCommandHandler((sender, command, label, args) -> {
             sender.sendMessage("§ctock");
             return false;
-        }).setUsage("/subcommand tick").addSubCommand(new SubCommandBuilder("tock").setPermission("subcommand.tock", PermissionDefault.OP).setCommandHandler(((sender, command, label, args) -> {
+        }).setUsage("/commandbuilder tick").addSubCommand(new SubCommandBuilder("tock").setPermission("commandbuilder.tock", PermissionDefault.OP).setCommandHandler(((sender, command, label, args) -> {
             if(args.length != 3){
                 return false;
             }
@@ -30,7 +30,7 @@ public class SubCommandPlugin extends JavaPlugin {
             if(p == null) return false;
                 p.getInventory().addItem(new ItemStack(Material.CLOCK,1));
          return true;
-        })).setUsage("/subcommand tick tock <Player>").setTabHandler((sender, command, label, args) -> {
+        })).setUsage("/commandbuilder tick tock <Player>").setTabHandler((sender, command, label, args) -> {
             List<String> out = new ArrayList<>();
             Bukkit.getOnlinePlayers().forEach(p -> out.add(p.getName()));
          return out;

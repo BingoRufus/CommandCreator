@@ -1,7 +1,7 @@
-package me.bingorufus.subcommand;
+package me.bingorufus.commandbuilder;
 
-import me.bingorufus.subcommand.handlers.CommandHandler;
-import me.bingorufus.subcommand.handlers.TabHandler;
+import me.bingorufus.commandbuilder.handlers.CommandHandler;
+import me.bingorufus.commandbuilder.handlers.TabHandler;
 import org.bukkit.permissions.Permission;
 
 import java.util.HashMap;
