@@ -112,3 +112,4 @@ buildNumber.properties
 .DS_Store.
 # Common working directory
 run/
+/.idea/
