@@ -1,0 +1,7 @@
+name: SubCommand
+author: BingoRufus
+version: 1.0
+main: me.bingorufus.subcommandtest.SubCommandPlugin
+commands:
+  subcommand:
+    description: Base command
