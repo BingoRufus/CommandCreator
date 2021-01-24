@@ -18,7 +18,7 @@ public abstract class AbstractCommand {
     private final Set<AbstractCommand> subCommands;
     private final HashMap<String,Boolean> aliases;
 
-    public AbstractCommand(String commandName, CommandExecutor commandHandler, TabCompleter tabHandler, Permission permission, String permissionMessage, String usageMessage, Set<AbstractCommand> subCommands, HashMap<String, Boolean> aliases) {
+     AbstractCommand(String commandName, CommandExecutor commandHandler, TabCompleter tabHandler, Permission permission, String permissionMessage, String usageMessage, Set<AbstractCommand> subCommands, HashMap<String, Boolean> aliases) {
         this.commandName = commandName;
         this.commandHandler = commandHandler;
         this.tabHandler = tabHandler;
