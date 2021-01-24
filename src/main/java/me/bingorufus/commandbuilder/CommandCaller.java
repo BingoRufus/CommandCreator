@@ -8,45 +8,46 @@ import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-class CommandCaller implements CommandExecutor {
-    private final SubCommand subCommand;
+ class CommandCaller implements CommandExecutor {
+    private final HeadCommand headCommand;
 
-    public CommandCaller(SubCommand subCommand) {
-        this.subCommand = subCommand;
+     CommandCaller(HeadCommand headCommand) {
+        this.headCommand = headCommand;
     }
 
     @Override
     public boolean onCommand(@Nonnull CommandSender sender, Command command, @Nonnull String label, @Nonnull String[] args) {
-        if (!command.getName().equalsIgnoreCase(subCommand.getCommandName())) {
+        if (!command.getName().equalsIgnoreCase(headCommand.getCommandName())) {
             return true;
         }
-        SubCommand applicableCommand = getSubCommand(subCommand, args);
-        if (applicableCommand == null) {
-            if (getLastCommand(subCommand, args).equals(subCommand) && !getHelpCommand().equals(subCommand)) {
-                getHelpCommand().getCommandHandler().onCommand(sender, command, label, args);
-                return true;
-            }
-            sender.sendMessage(getSubCommand(subCommand, removeFirstItem(args)) == null ? getLastCommand(subCommand, args).getUsageMessage() : subCommand.getUsageMessage());
-            return true;
-        }
+        AbstractCommand applicableCommand = getSubCommand(headCommand, args);
+        if (applicableCommand == null) applicableCommand = getLastCommand(headCommand,args);
+
+
         if (applicableCommand.getPermission() != null && !sender.hasPermission(applicableCommand.getPermission())) {
             sender.sendMessage(applicableCommand.getPermissionMessage());
             return true;
         }
-
+        String[] relevantArgs = getRelevantArgs(args,applicableCommand);
         if (applicableCommand.getCommandHandler() != null) {
-            if (!applicableCommand.getCommandHandler().onCommand(sender, command, label, args)) {
+            if (!applicableCommand.getCommandHandler().onCommand(sender, command, label, relevantArgs)) {
                 sender.sendMessage(applicableCommand.getUsageMessage());
+            }
+            return true;
+
+        }
+            if(getHelpCommand() != null){
+                getHelpCommand().getCommandHandler().onCommand(sender, command, label, relevantArgs);
                 return true;
             }
-        }
+            sender.sendMessage(headCommand.getUsageMessage());
 
         return true;
     }
 
-    private SubCommand getSubCommand(SubCommand command, String[] args) {
+    private AbstractCommand getSubCommand(AbstractCommand command, String[] args) {
         if (command.getSubCommands().size() == 0 || args.length == 0) return command;
-        for (SubCommand sub : command.getSubCommands()) {
+        for (AbstractCommand sub : command.getSubCommands()) {
             for (String alias : sub.getAliases().keySet()) {
                 if (alias.equalsIgnoreCase(args[0])) {
                     return getSubCommand(sub, removeFirstItem(args));
@@ -62,9 +63,9 @@ class CommandCaller implements CommandExecutor {
         return out.toArray(new String[0]);
     }
 
-    private SubCommand getLastCommand(SubCommand command, String[] args) {
+    private AbstractCommand getLastCommand(AbstractCommand command, String[] args) {
         if (command.getSubCommands().size() == 0 || args.length == 0) return command;
-        for (SubCommand commandSubCommand : command.getSubCommands()) {
+        for (AbstractCommand commandSubCommand : command.getSubCommands()) {
             for (String commandName : commandSubCommand.getAliases().keySet()) {
                 if (commandName.equalsIgnoreCase(args[0])) {
                     return getLastCommand(commandSubCommand, removeFirstItem(args));
@@ -74,7 +75,19 @@ class CommandCaller implements CommandExecutor {
         return command;
     }
 
-    private SubCommand getHelpCommand() {
-        return subCommand.getSubCommands().stream().filter(subCommand1 -> subCommand1.getCommandName().equalsIgnoreCase("help")).findFirst().orElse(subCommand);
+    private AbstractCommand getHelpCommand() {
+        return  headCommand.getSubCommands().stream().filter(subCommand1 -> subCommand1.getCommandName().equalsIgnoreCase("help")).findFirst().orElse(null);
     }
+
+     private String[] getRelevantArgs(String[] args, AbstractCommand command){
+         if (args.length == 0) return args;
+         String[] out =  args;
+         while (command instanceof SubCommand){
+             SubCommand sub = (SubCommand) command;
+             out = removeFirstItem(out);
+             if(!sub.hasParent()) break;
+             command = sub.getParent();
+         }
+         return out;
+     }
 }

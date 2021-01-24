@@ -9,21 +9,25 @@ import java.util.Arrays;
 import java.util.List;
 
 class TabCompleter implements org.bukkit.command.TabCompleter {
-    private final SubCommand subCommand;
+    private final HeadCommand headCommand;
 
-    public TabCompleter(SubCommand subCommand) {
-        this.subCommand = subCommand;
+     TabCompleter(HeadCommand headCommand) {
+        this.headCommand = headCommand;
     }
 
     @Override
     public List<String> onTabComplete(@Nonnull CommandSender sender, @Nonnull Command command, @Nonnull String label, @Nonnull String[] args) {
         ArrayList<String> out = new ArrayList<>();
         ArrayList<String> possible = new ArrayList<>();
-        SubCommand writtenCommand = getSubCommand(subCommand, args);
+        AbstractCommand writtenCommand = getSubCommand(headCommand, args);
         if (writtenCommand == null) return out;
-        if (writtenCommand.getSubCommands().size() == 0 && writtenCommand.getTabHandler() != null) {
-            possible.addAll(writtenCommand.getTabHandler().onTabComplete(sender, command, label, args));
+        if(writtenCommand.getPermission() != null && !sender.hasPermission(writtenCommand.getPermission())) return out;
+
+        String[] relevantArgs = getRelevantArgs(args,writtenCommand);
+            if (writtenCommand.getTabHandler() != null) {
+            possible.addAll(writtenCommand.getTabHandler().onTabComplete(sender, command, label, relevantArgs));
         }
+
         writtenCommand.getSubCommands().forEach(sub -> {
             if (sub.getPermission() != null && !sender.hasPermission(sub.getPermission())) return;
             sub.getAliases().forEach((alias, tab) -> {
@@ -31,15 +35,15 @@ class TabCompleter implements org.bukkit.command.TabCompleter {
             });
         });
         possible.forEach(possibleTab -> {
-            if (possibleTab.toUpperCase().startsWith(args[args.length - 1].toUpperCase())) out.add(possibleTab);
-
+            if ( relevantArgs != null && !startsWith(relevantArgs,splitToArg(possibleTab))) return;
+                out.add(possibleTab);
         });
         return out;
     }
 
-    private SubCommand getSubCommand(SubCommand command, String[] args) {
+    private AbstractCommand getSubCommand(AbstractCommand command, String[] args) {
         if (command.getSubCommands().size() == 0 || args.length == 0) return command;
-        for (SubCommand commandSubCommand : command.getSubCommands()) {
+        for (AbstractCommand commandSubCommand : command.getSubCommands()) {
             for (String commandName : commandSubCommand.getAliases().keySet()) {
                 if (commandName.equalsIgnoreCase(args[0]))
                     return getSubCommand(commandSubCommand, removeFirstItem(args));
@@ -48,10 +52,32 @@ class TabCompleter implements org.bukkit.command.TabCompleter {
         }
         return null;
     }
+    private String[] getRelevantArgs(String[] args, AbstractCommand command){
+        if (args.length == 0) return args;
+        String[] out =  args;
+        while (command instanceof SubCommand){
+            SubCommand sub = (SubCommand) command;
+            out = removeFirstItem(out);
+            if(!sub.hasParent()) break;
+            command = sub.getParent();
+        }
+        return out;
+    }
 
     private String[] removeFirstItem(String[] args) {
         ArrayList<String> out = new ArrayList<>(Arrays.asList(args));
         out.remove(0);
         return out.toArray(new String[0]);
+    }
+
+    private String[] splitToArg(String argument){
+         return argument.split(" ");
+    }
+    private boolean startsWith(String[] args, String[] suggestion){
+         if(args.length > suggestion.length) return false;
+         if(args.length == 0) return  true;
+         if(suggestion[0].equals(args[0])) return startsWith(removeFirstItem(args),removeFirstItem(suggestion));
+
+         return suggestion[0].startsWith(args[0]);
     }
 }

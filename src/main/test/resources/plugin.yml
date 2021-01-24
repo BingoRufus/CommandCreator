@@ -1,6 +1,6 @@
 name: SubCommand
 author: BingoRufus
-version: 1.0
+version: ${project.version}
 main: me.bingorufus.subcommandtest.SubCommandPlugin
 commands:
   subcommand:
