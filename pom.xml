@@ -7,22 +7,8 @@
     <groupId>io.github.bingorufus</groupId>
     <artifactId>CommandCreator</artifactId>
     <version>1.2.0</version>
-    <dependencies>
-        <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot-api</artifactId>
-            <version>1.16.3-R0.1-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>minecraft-server</artifactId>
-            <version>1.16.4-SNAPSHOT</version>
-        </dependency>
-    </dependencies>
-    <packaging>jar</packaging>
 
     <name>CommandCreator</name>
-
     <description>Easily create commands and subcommands</description>
     <properties>
         <java.version>1.8</java.version>
@@ -56,6 +42,21 @@
             <email>bingorufus@gmail.com</email>
         </developer>
     </developers>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot-api</artifactId>
+            <version>1.16.3-R0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>minecraft-server</artifactId>
+            <version>1.16.4-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+    <packaging>jar</packaging>
+
     <build>
         <plugins>
             <plugin>
