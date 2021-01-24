@@ -4,9 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>io.github.bingorufus</groupId>
-    <artifactId>CommandCreator</artifactId>
-    <version>1.2.0</version>
+    <groupId>com.github.bingorufus</groupId>
+    <artifactId>command-creator</artifactId>
+    <version>1.2.1</version>
 
     <name>CommandCreator</name>
     <description>Easily create commands and subcommands</description>
@@ -14,7 +14,7 @@
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-    <url>https://www.github.com/bingorufus/ChatItemDisplay</url>
+    <url>https://www.github.com/bingorufus/CommandCreator</url>
 
     <scm>
         <connection>scm:git:git://github.com/BingoRufus/CommandCreator.git</connection>
@@ -93,11 +93,13 @@
         </resources>
     </build>
 
-    <repositories>
+
+    <distributionManagement>
         <repository>
-            <id>spigotmc-repo</id>
-            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+            <id>github</id>
+            <name>GitHub BingoRufus Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/bingorufus/commandcreator</url>
         </repository>
-    </repositories>
+    </distributionManagement>
 
 </project>

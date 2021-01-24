@@ -1,5 +1,6 @@
-package me.bingorufus.commandbuilder;
+package com.bingorufus.commandcreator;
 
+import com.bingorufus.commandcreator.builders.CommandBuilder;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.command.TabCompleter;
@@ -11,7 +12,7 @@ import java.util.Set;
 
 /**
  * The main parent for all commands
- * @see me.bingorufus.commandbuilder.builders.CommandBuilder
+ * @see CommandBuilder
  */
 
 public class HeadCommand extends AbstractCommand {
@@ -19,7 +20,7 @@ public class HeadCommand extends AbstractCommand {
 
     /**
      *It is highly recommended to use the command builder
-     * @see me.bingorufus.commandbuilder.builders.CommandBuilder
+     * @see CommandBuilder
      */
     public HeadCommand(String commandName, CommandExecutor commandHandler, TabCompleter tabHandler, Permission permission, String permissionMessage, String usageMessage, Set<AbstractCommand> subCommands, HashMap<String, Boolean> aliases) {
         super(commandName, commandHandler, tabHandler, permission, permissionMessage, usageMessage, subCommands, aliases);
@@ -35,7 +36,7 @@ public class HeadCommand extends AbstractCommand {
         PluginCommand cmd = plugin.getCommand(getCommandName());
         if(cmd == null) throw new RuntimeException("A command with the name of \"{c}\" has not been registered in the plugin.yml".replace("{c}",getCommandName()));
         cmd.setExecutor(new CommandCaller(this));
-        cmd.setTabCompleter(new me.bingorufus.commandbuilder.TabCompleter(this));
+        cmd.setTabCompleter(new com.bingorufus.commandcreator.TabCompleter(this));
         isRegistered = true;
     }
 

@@ -1,7 +1,7 @@
 package me.bingorufus.subcommandtest;
 
-import me.bingorufus.commandbuilder.builders.CommandBuilder;
-import me.bingorufus.commandbuilder.builders.SubCommandBuilder;
+import com.bingorufus.commandcreator.builders.CommandBuilder;
+import com.bingorufus.commandcreator.builders.SubCommandBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;

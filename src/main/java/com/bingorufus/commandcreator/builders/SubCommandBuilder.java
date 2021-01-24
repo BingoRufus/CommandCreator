@@ -1,9 +1,7 @@
-package me.bingorufus.commandbuilder.builders;
+package com.bingorufus.commandcreator.builders;
 
-import me.bingorufus.commandbuilder.AbstractCommand;
-import me.bingorufus.commandbuilder.HeadCommand;
-import me.bingorufus.commandbuilder.SubCommand;
-import me.bingorufus.commandbuilder.builders.AbstractCommandBuilder;
+import com.bingorufus.commandcreator.AbstractCommand;
+import com.bingorufus.commandcreator.SubCommand;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.permissions.Permission;

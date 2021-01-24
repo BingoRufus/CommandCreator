@@ -1,4 +1,4 @@
-package me.bingorufus.commandbuilder;
+package com.bingorufus.commandcreator;
 
 
 import org.bukkit.command.CommandExecutor;

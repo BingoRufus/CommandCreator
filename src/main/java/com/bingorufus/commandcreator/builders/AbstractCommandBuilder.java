@@ -1,8 +1,9 @@
-package me.bingorufus.commandbuilder.builders;
+package com.bingorufus.commandcreator.builders;
 
+import com.bingorufus.commandcreator.HeadCommand;
 import javafx.util.Builder;
-import me.bingorufus.commandbuilder.AbstractCommand;
-import me.bingorufus.commandbuilder.SubCommand;
+import com.bingorufus.commandcreator.AbstractCommand;
+import com.bingorufus.commandcreator.SubCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.TabCompleter;
@@ -146,7 +147,7 @@ public abstract class AbstractCommandBuilder<T extends AbstractCommand> implemen
 
     /**
      * Compiles the command. When making a parent command, the command handler and tab handler will not be ran unless the
-     * command is registered {@link me.bingorufus.commandbuilder.HeadCommand#register(JavaPlugin)}
+     * command is registered {@link HeadCommand#register(JavaPlugin)}
      *
      * @return the built command
      */
